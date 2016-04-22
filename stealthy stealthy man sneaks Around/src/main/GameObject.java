@@ -20,10 +20,6 @@ public abstract class GameObject {
 	
 	public abstract Rectangle getBounds();
 	
-	public abstract Rectangle getTop();
-	
-	public abstract Rectangle getBottom();
-	
 	public abstract void reset();
 	
 	public int getX() {return x;}

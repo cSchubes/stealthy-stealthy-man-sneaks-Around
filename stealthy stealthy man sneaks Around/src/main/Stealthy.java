@@ -4,14 +4,20 @@ import java.awt.Canvas;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
+import javax.swing.JFrame;
+
 public class Stealthy extends Canvas implements Runnable{
 	private boolean running;
 	private Handler handler;
 	private HUD hud;
+	private JFrame gameFrame;
+	private Stealthy nextLevel;
 	
-	public Stealthy(){
+	public Stealthy(JFrame frame, Stealthy next){
 		handler = new Handler();
 		hud = new HUD();
+		gameFrame = frame;
+		nextLevel = next;
 	}
 
 	public void run() {
