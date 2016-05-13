@@ -10,12 +10,16 @@ public class Game extends JFrame{
 	public Game(){
 		setSize(1000, 750);
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
+		Stealthy stealth = new Stealthy(this);
+		add(stealth);
+		Thread t = new Thread(stealth);
+		t.start();
 		setVisible(true);
 	}
 	
 	public static void main (String[] args){
-		new Game();
+		Game g = new Game();
 	}
 }

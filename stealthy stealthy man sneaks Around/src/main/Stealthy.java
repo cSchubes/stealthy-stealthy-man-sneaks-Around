@@ -1,23 +1,26 @@
 package main;
 
-import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class Stealthy extends Canvas implements Runnable{
+public class Stealthy extends JPanel implements Runnable{
 	private boolean running;
 	private Handler handler;
 	private HUD hud;
 	private JFrame gameFrame;
-	private Stealthy nextLevel;
+	//private Stealthy nextLevel;
 	
-	public Stealthy(JFrame frame, Stealthy next){
+	public Stealthy(JFrame frame){
 		handler = new Handler();
+		handler.addObject(new Player(150,250, ID.Player));
 		hud = new HUD();
 		gameFrame = frame;
-		nextLevel = next;
+		running = true;
+		frame.add(this);
 	}
 
 	public void run() {
@@ -32,12 +35,12 @@ public class Stealthy extends Canvas implements Runnable{
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
-			while(delta >= 1)
-				delta--;
-			if (running){
+			while(delta >= 1){
 				tick();
-				render();
+				delta--;
 			}
+			if (running)
+				render();
 			frames++;
 			
 			if(System.currentTimeMillis() - timer > 1000){
@@ -54,18 +57,17 @@ public class Stealthy extends Canvas implements Runnable{
 	}
 	
 	public void render(){
-		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null){
-			this.createBufferStrategy(3);
-			return;
-		}
-		
-		Graphics2D g2 = (Graphics2D) bs.getDrawGraphics();
+		repaint();
+	}
+	
+	public void paint(Graphics g){
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.ORANGE);
+		g2.fillRect(0, 0, 1000, 750);
 		
 		handler.render(g2);
 		hud.render(g2);
 		
 		g2.dispose();
-		bs.show();
 	}
 }
