@@ -3,11 +3,14 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Stealthy extends JPanel implements Runnable{
+public class Stealthy extends JPanel implements Runnable, KeyListener{
 	private boolean running;
 	private Handler handler;
 	private HUD hud;
@@ -16,11 +19,15 @@ public class Stealthy extends JPanel implements Runnable{
 	
 	public Stealthy(JFrame frame){
 		handler = new Handler();
-		handler.addObject(new Player(150,250, ID.Player));
+		addKeyListener(this);
+		handler.addObject(new Player(150, 250, 3, ID.Player));
+		int xpoints[] = {0, 1000, 1000, 0};
+		int ypoints[] = {0, 0, 50, 50};
+		Polygon p = new Polygon(xpoints, ypoints, 4);
+		handler.addObject(new Wall(0, 0, 0, ID.Wall, p));
 		hud = new HUD();
 		gameFrame = frame;
 		running = true;
-		frame.add(this);
 	}
 
 	public void run() {
@@ -69,5 +76,32 @@ public class Stealthy extends JPanel implements Runnable{
 		hud.render(g2);
 		
 		g2.dispose();
+	}
+	
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		
+		for(int i = 0; i<handler.objects.size(); i++){
+			GameObject temp = handler.objects.get(i);
+			
+			if(temp.getId() == ID.Player){
+				if(key == KeyEvent.VK_LEFT) {
+					temp.setVelX(-temp.getSpeed());
+				}
+				if(key == KeyEvent.VK_RIGHT) {
+					temp.setVelX(temp.getSpeed());
+				}
+			}
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

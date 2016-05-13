@@ -7,12 +7,12 @@ import java.util.Random;
 
 public class Player extends GameObject{
 	
-	Random r;
-	
-	public Player(int x, int y, ID id){
-		super(x, y, id);
-		setVelX(2);
-		r = new Random();
+	private int speed;
+		
+	public Player(int x, int y, int speed, ID id){
+		super(x, y, speed, id);
+		//setVelX(2);
+		speed = 3;
 	}
 	
 	public void tick() {

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class Handler {
 	ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	
-	public void tick(){
+	public void tick()
+	{
 		for(GameObject g:objects)
 			g.tick();
 	}

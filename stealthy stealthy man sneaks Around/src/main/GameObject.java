@@ -7,11 +7,13 @@ public abstract class GameObject {
 	private int x, y;
 	private ID id;
 	private int velX, velY;
+	private int speed;
 	
-	public GameObject(int x, int y, ID id){
+	public GameObject(int x, int y, int speed, ID id){
 		this.x = x;
 		this.y = y;
 		this.id = id;
+		this.speed = speed;
 	}
 	
 	public abstract void tick();
@@ -50,5 +52,13 @@ public abstract class GameObject {
 	
 	public void setId(ID id){
 		this.id = id;
+	}
+	
+	public void setSpeed(int s){
+		speed = s;
+	}
+	
+	public int getSpeed(){
+		return speed;
 	}
 }

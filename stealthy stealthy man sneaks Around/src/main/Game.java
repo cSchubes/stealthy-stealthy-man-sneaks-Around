@@ -13,6 +13,7 @@ public class Game extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Stealthy stealth = new Stealthy(this);
+		stealth.setFocusable(true);
 		add(stealth);
 		Thread t = new Thread(stealth);
 		t.start();
