@@ -1,10 +1,11 @@
 package main;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.Shape;
 
 public abstract class GameObject {
 	private int x, y;
+	private int initX, initY;
 	private ID id;
 	private int velX, velY;
 	private int speed;
@@ -12,6 +13,8 @@ public abstract class GameObject {
 	public GameObject(int x, int y, int speed, ID id){
 		this.x = x;
 		this.y = y;
+		initX = x;
+		initY = y;
 		this.id = id;
 		this.speed = speed;
 	}
@@ -20,7 +23,7 @@ public abstract class GameObject {
 	
 	public abstract void render(Graphics2D g2);
 	
-	public abstract Rectangle getBounds();
+	public abstract Shape getBounds();
 	
 	public abstract void reset();
 	
@@ -60,5 +63,13 @@ public abstract class GameObject {
 	
 	public int getSpeed(){
 		return speed;
+	}
+	
+	public int getInitX(){
+		return initX;
+	}
+	
+	public int getInitY(){
+		return initY;
 	}
 }

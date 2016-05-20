@@ -2,7 +2,9 @@ package main;
 
 public enum ID {
 	Player(),
-	Enemy(),
+	Guard(),
 	Camera(),
-	Wall();
+	Wall(),
+	Key(),
+	Door();
 }
