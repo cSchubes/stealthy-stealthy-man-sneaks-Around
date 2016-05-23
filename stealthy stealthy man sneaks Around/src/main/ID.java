@@ -6,5 +6,6 @@ public enum ID {
 	Camera(),
 	Wall(),
 	Key(),
-	Door();
+	Door(),
+	End();
 }

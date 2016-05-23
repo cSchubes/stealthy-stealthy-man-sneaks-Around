@@ -8,12 +8,13 @@ import java.awt.Shape;
 public class Door extends GameObject{
 
 	private Color col;
-	private boolean closed;
+	private boolean closed, vertical;
 	
-	public Door(int x, int y, Color c){
+	public Door(int x, int y, Color c, boolean v){
 		super(x, y, 0, ID.Door);
 		col = c;
 		closed = true;
+		vertical = v;
 	}
 	
 	public void tick() {
@@ -22,17 +23,45 @@ public class Door extends GameObject{
 
 	public void render(Graphics2D g2) {
 		g2.setColor(col);
-		if(closed)
-			g2.fillRect(getX(), getY(), 50, 10);
-		else
-			g2.fillRect(getX(), getY(), 10, 50);
+		Rectangle outline = null;
+		if(!vertical){
+			if(closed){
+				outline = new Rectangle(getX(), getY(), 49, 10);
+				g2.fill(outline);
+			}
+			else{
+				outline = new Rectangle(getX(), getY(), 10, 49);
+				g2.fill(outline);
+			}
+				
+		}
+		else{
+			if(closed){
+				outline = new Rectangle(getX(), getY(), 10, 49);
+				g2.fill(outline);
+			}
+			else{
+				outline = new Rectangle(getX()-39, getY(), 49, 10);
+				g2.fill(outline);
+			}
+		}
+		g2.setColor(new Color(139, 69, 19));
+		g2.draw(outline);
 	}
 	
 	public Shape getBounds() {
-		if(closed)
-			return new Rectangle(getX(), getY(), 50, 10);
-		else
-			return new Rectangle(getX(), getY(), 10, 50);
+		if(!vertical){
+			if(closed)
+				return new Rectangle(getX(), getY(), 50, 10);
+			else
+				return new Rectangle(getX(), getY(), 10, 50);
+		}
+		else{
+			if(closed)
+				return new Rectangle(getX(), getY(), 10, 50);
+			else
+				return new Rectangle(getX()-38, getY(), 50, 10);
+		}
 	}
 
 	public void reset() {

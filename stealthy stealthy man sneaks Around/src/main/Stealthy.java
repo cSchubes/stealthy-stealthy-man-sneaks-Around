@@ -3,11 +3,10 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -17,36 +16,17 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 	private HUD hud;
 	private Game gameFrame;
 	public static boolean lost;
-	//private Stealthy nextLevel;
+	private int currentLevel;
+	public static boolean win;
 	
 	public Stealthy(Game frame){
 		handler = new Handler();
 		addKeyListener(this);
-		int wallOneXpoints[] = {0, 850, 850, 200, 200, 50, 50, 200, 200, 50, 50, 0};
-		int wallOneYpoints[] = {0, 0, 50, 50, 400, 400, 450, 450, 650, 650, 750, 750};
-		int wallTwoXpoints[] = {250, 850, 850, 550, 550, 600, 600, 500, 500, 250};
-		int wallTwoYpoints[] = {100, 100, 500, 500, 300, 300, 250, 250, 500, 500};
-		int wallThreeXpoints[] = {100, 100, 250, 250, 650, 650, 800, 800, 700, 700, 900, 900, 1000, 1000};
-		int wallThreeYpoints[] = {750, 700, 700, 550, 550, 700, 700, 650, 650, 550, 550, 0, 0, 750};
-		Polygon p = new Polygon(wallOneXpoints, wallOneYpoints, 12);
-		Polygon p2 = new Polygon(wallTwoXpoints, wallTwoYpoints, 10);
-		Polygon p3 = new Polygon(wallThreeXpoints, wallThreeYpoints, 14);
-		handler.addObject(new Player(65, 675, 2, handler));
-		handler.addObject(new Wall(0, 0, 0, p2));
-		handler.addObject(new Wall(0, 0, 0, p));
-		handler.addObject(new Wall(0, 0, 0, p3));
-		handler.addObject(new Key(570, 260, Color.YELLOW));
-		handler.addObject(new Door(850, 0, Color.YELLOW));
-		Guard one = new Guard(260, 65, 1, 250, 800, Guard.RIGHT);
-		one.setVelX(1);
-		Guard two = new Guard(740, 515, 2, 250, 750, Guard.LEFT);
-		two.setVelX(-2);
-		handler.addObject(one);
-		handler.addObject(two);
 		hud = new HUD();
 		gameFrame = frame;
 		running = true;
 		lost = false;
+		win = false;
 	}
 
 	public void run() {
@@ -73,6 +53,8 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 				int result = JOptionPane.showConfirmDialog(null, "You tripped the alarm! Head back to your cell...  \nTry for another escape?", "You lose!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if(result == 1){
 					gameFrame.main.setVisible(true);
+					gameFrame.main.resetStealthy();
+					resetAll();
 					running = false;
 				}
 				else{
@@ -87,6 +69,15 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 					*/
 					resetAll();
 				}
+			}
+			
+			if(win){
+				currentLevel++;
+				handler = gameFrame.getHandler(currentLevel);
+				int[] clock = {hud.getMinute(), hud.getTen(), hud.getSecond()};
+				hud = gameFrame.getHUD(currentLevel);
+				hud.setClock(clock);
+				win = false;
 			}
 		}
 	}
@@ -163,7 +154,16 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 	
 	public void resetAll(){
 		handler.reset();
-		hud.reset();
-		
+		//hud.reset();
+	}
+	
+	public void setLevel(int x){
+		handler = gameFrame.getHandler(x);
+		hud = gameFrame.getHUD(x);
+		currentLevel = x;
+	}
+	
+	public int getLevel(){
+		return currentLevel;
 	}
 }

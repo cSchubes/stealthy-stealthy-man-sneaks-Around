@@ -47,4 +47,22 @@ public class HUD {
 		one = -1;
 		lastTime = currentTime = elapsed = 0;
 	}
+	
+	public void setClock(int[] clock){
+		minute = clock[0];
+		ten = clock[1];
+		one = clock[2];
+	}
+	
+	public int getMinute(){
+		return minute;
+	}
+	
+	public int getTen(){
+		return ten;
+	}
+	
+	public int getSecond(){
+		return one;
+	}
 }

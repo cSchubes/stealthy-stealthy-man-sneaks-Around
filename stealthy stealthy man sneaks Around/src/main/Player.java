@@ -10,14 +10,19 @@ import java.util.ArrayList;
 
 public class Player extends GameObject{
 	
+	public static int LEFT_WIN = 1;
+	public static int RIGHT_WIN = 2;
+	public static int TOP_WIN = 3;
+	public static int BOT_WIN = 4;
+	
 	private Handler handler;
 	private boolean left, right, up, down;
 	private ArrayList<Key> keys;
 	private boolean lost;
 	private long currentTime, lastTime, elapsed;
-	private int counter;
+	private int counter, side;
 		
-	public Player(int x, int y, int speed, Handler handler){
+	public Player(int x, int y, int speed, Handler handler, int side){
 		super(x, y, speed, ID.Player);
 		this.handler = handler;
 		left = right = up = down = true;
@@ -25,6 +30,7 @@ public class Player extends GameObject{
 		lost = false;
 		currentTime = lastTime = elapsed = 0;
 		counter = 0;
+		this.side = side;
 	}
 	
 	public void tick(){
@@ -39,6 +45,7 @@ public class Player extends GameObject{
 			lastTime = System.nanoTime();
 		}
 		collision();
+		win();
 		clamp();
 		if(left && getVelX()<0)
 			setX(getX()+getVelX());
@@ -105,13 +112,14 @@ public class Player extends GameObject{
 	}
 	
 	public void clamp(){
-		if(getX()>975){
+		if(getX()>1000
+				){
 			right = false;
 		}
 		if(getX()<0){
 			left = false;
 		}
-		if(getY()>712){
+		if(getY()>725){
 			down = false;
 		}
 		if(getY()<0){
@@ -127,7 +135,8 @@ public class Player extends GameObject{
 		for(int i = 0; i<handler.objects.size(); i++){
 			GameObject temp = handler.objects.get(i);
 				if(temp.getId() == ID.Guard){
-					if(((Guard)temp).getVision().contains(getTopRight())||temp.getBounds().contains(getTopLeft())||temp.getBounds().contains(getBotLeft())||temp.getBounds().contains(getBotRight())||temp.getBounds().contains(getLeftTop())||temp.getBounds().contains(getLeftBot())||temp.getBounds().contains(getRightTop())||temp.getBounds().contains(getRightBot())){
+					Guard tempG = (Guard) temp;
+					if(tempG.getVision().contains(getTopRight())||tempG.getVision().contains(getTopLeft())||tempG.getVision().contains(getBotLeft())||tempG.getVision().contains(getBotRight())||tempG.getVision().contains(getLeftTop())||tempG.getVision().contains(getLeftBot())||tempG.getVision().contains(getRightTop())||tempG.getVision().contains(getRightBot())){
 						lost = true;
 						ArrayList<Wall> turn = handler.getWalls();
 						for(Wall w:turn){
@@ -180,5 +189,23 @@ public class Player extends GameObject{
 					((Door)temp).open();
 			}
 		}
+	}
+	
+	public void win(){
+		if(side == LEFT_WIN){
+			if(getX()<0)
+				Stealthy.win = true;
+		}
+		else if(side == RIGHT_WIN){
+			if(getX()>975)
+				Stealthy.win = true;
+		}
+		else if(side == TOP_WIN){
+			if(getY() < 0)
+				Stealthy.win = true;
+		}
+		else
+			if(getY()>725)
+				Stealthy.win = true;
 	}
 }
