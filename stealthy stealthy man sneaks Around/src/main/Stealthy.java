@@ -1,3 +1,7 @@
+/* Ahmad Lubis, Alex Krach, Carson Schubert 
+ *  Gallatin 3rd
+ *  stealthy stealthy man sneaks Around
+ */
 package main;
 
 import java.awt.Color;
@@ -19,6 +23,10 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 	private int currentLevel;
 	public static boolean win;
 	
+	/**
+	 * This constructs a new Stealthy
+	 * @param frame - The game that this is a part of
+	 */
 	public Stealthy(Game frame){
 		handler = new Handler();
 		addKeyListener(this);
@@ -29,10 +37,13 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 		win = false;
 	}
 
+	/**
+	 * This runs the game.
+	 */
 	public void run() {
 		this.requestFocus();
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0;
+		double amountOfTicks = 80.0;
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
@@ -52,41 +63,55 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 			if(lost){
 				int result = JOptionPane.showConfirmDialog(null, "You tripped the alarm! Head back to your cell...  \nTry for another escape?", "You lose!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if(result == 1){
+					currentLevel = 0;
 					gameFrame.main.setVisible(true);
 					gameFrame.main.resetStealthy();
 					resetAll();
+					resetHUD();
+					handler = gameFrame.getHandler(currentLevel);
+					hud = gameFrame.getHUD(currentLevel);
+					resetAll();
+					resetHUD();
 					running = false;
 				}
 				else{
-					/*
-					gameFrame.dispose();
-					gameFrame = new Game();
-					gameFrame.main.setVisible(false);
-					Stealthy s = new Stealthy(gameFrame);
-					Thread t = new Thread(s);
-					t.start();
-					gameFrame.removeAll();
-					*/
 					resetAll();
 				}
 			}
 			
 			if(win){
 				currentLevel++;
-				handler = gameFrame.getHandler(currentLevel);
-				int[] clock = {hud.getMinute(), hud.getTen(), hud.getSecond()};
-				hud = gameFrame.getHUD(currentLevel);
-				hud.setClock(clock);
-				win = false;
+				if(currentLevel == 4){
+					gameFrame.dispose();
+					gameFrame = new Game();
+					gameFrame.winning.setTime(hud.getMinute() + ":" + hud.getTen() + hud.getSecond());
+					gameFrame.winning.setVisible(true);
+					gameFrame.main.setVisible(false);
+					gameFrame.addWin();
+					running = false;
+				}
+				else{
+					handler = gameFrame.getHandler(currentLevel);
+					int[] clock = {hud.getMinute(), hud.getTen(), hud.getSecond()};
+					hud = gameFrame.getHUD(currentLevel);
+					hud.setClock(clock);
+					win = false;
+				}
 			}
 		}
 	}
 	
+	/**
+	 * This method updates the information of every object in this game.
+	 */
 	public void tick(){
 		handler.tick();
 		hud.tick();
 	}
 	
+	/**
+	 * This method repaints the frame and updates the game graphically.
+	 */
 	public void render(){
 		repaint();
 	}
@@ -102,6 +127,10 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 		g2.dispose();
 	}
 	
+	/**
+	 * This method reads in what key is pressed and updates the speed of the player accordingly.
+	 * @param e - The key that is pressed.
+	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
@@ -125,6 +154,10 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 		}
 	}
 
+	/**
+	 * This method stops the player from moving when the key is released.
+	 * @param e - the key that is released.
+	 */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		
@@ -148,21 +181,42 @@ public class Stealthy extends JPanel implements Runnable, KeyListener{
 		}
 	}
 
+	/**
+	 * This is an inherited method.
+	 */
 	public void keyTyped(KeyEvent e) {
 		
 	}
 	
+	/**
+	 * This resets the information in the handler.
+	 */
 	public void resetAll(){
 		handler.reset();
 		//hud.reset();
 	}
 	
+	/**
+	 * This method resets the information in the HUD.
+	 */
+	public void resetHUD(){
+		hud.reset();
+	}
+	
+	/**
+	 * This method determines the level that the game is on and draws the map accordingly.
+	 * @param x - an int that sets which level you are on.
+	 */
 	public void setLevel(int x){
 		handler = gameFrame.getHandler(x);
 		hud = gameFrame.getHUD(x);
 		currentLevel = x;
 	}
 	
+	/**
+	 * a method to return the level number.
+	 * @return - the level number.
+	 */
 	public int getLevel(){
 		return currentLevel;
 	}

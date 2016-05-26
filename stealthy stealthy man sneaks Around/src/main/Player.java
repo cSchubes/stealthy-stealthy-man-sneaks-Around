@@ -1,3 +1,7 @@
+/* Ahmad Lubis, Alex Krach, Carson Schubert 
+ *  Gallatin 3rd
+ *  stealthy stealthy man sneaks Around
+ */
 package main;
 
 import java.awt.Color;
@@ -22,6 +26,14 @@ public class Player extends GameObject{
 	private long currentTime, lastTime, elapsed;
 	private int counter, side;
 		
+	/**
+	 * a method that constructs a Player.
+	 * @param x - the x-coord of the player
+	 * @param y - the y-coord of the player
+	 * @param speed - the speed of the player
+	 * @param handler - the Handler that you will add the Player to
+	 * @param side - the side that the player will start at
+	 */
 	public Player(int x, int y, int speed, Handler handler, int side){
 		super(x, y, speed, ID.Player);
 		this.handler = handler;
@@ -33,6 +45,9 @@ public class Player extends GameObject{
 		this.side = side;
 	}
 	
+	/**
+	 * A method that updates the Player's information
+	 */
 	public void tick(){
 		if(lost){
 			currentTime = System.nanoTime();
@@ -57,47 +72,88 @@ public class Player extends GameObject{
 			setY(getY()+getVelY());
 	}
 
+	/**
+	 * a method that paints the player.
+	 */
 	public void render(Graphics2D g2) {
 		g2.setColor(Color.GREEN);
 		g2.fillRect(getX(), getY(), 25, 25);
 	}
 
+	/**
+	 * a method that gets the bounds of the player
+	 */
 	public Shape getBounds() {
 		return new Rectangle(getX(), getY(), 25, 25);
 	}
 	
+	/**
+	 * A method that gets the top left coordinates
+	 * @return the top left point.
+	 */
 	public Point2D.Double getLeftTop(){
 		return new Point2D.Double(getX(), getY()+3);
 	}
 	
+	/**
+	 * A method that returns the left bottom corner
+	 * @return a point of the left bottom corner
+	 */
 	public Point2D.Double getLeftBot(){
 		return new Point2D.Double(getX(), getY() + 21);
 	}
 	
+	/**
+	 * a method that gets the top left point
+	 * @return the top left point
+	 */
 	public Point2D.Double getTopLeft(){
 		return new Point2D.Double(getX() + 3, getY());
 	}
 	
+	/**
+	 * a method that gets the top right point
+	 * @return the top right point
+	 */
 	public Point2D.Double getTopRight(){
 		return new Point2D.Double(getX() + 21, getY());
 	}
 	
+	/**
+	 * a method that gets the right top's point
+	 * @return the right top's point
+	 */
 	public Point2D.Double getRightTop(){
 		return new Point2D.Double(getX() + 25, getY() + 3);
 	}
 	
+	/**
+	 * a method that gets the right bottom
+	 * @return a point of the right bottom
+	 */
 	public Point2D.Double getRightBot(){
 		return new Point2D.Double(getX() + 25, getY() + 21);
 	}
 	
+	/**
+	 * a method that gets the bottom left
+	 * @return a point of the bottom left
+	 */
 	public Point2D.Double getBotLeft(){
 		return new Point2D.Double(getX() + 3, getY() + 25);
 	}
 	
+	/**
+	 * a method that gets the bottom right
+	 * @return a point of the bottom right.
+	 */
 	public Point2D.Double getBotRight(){
 		return new Point2D.Double(getX() + 21, getY() + 25);
 	}
 
+	/**
+	 * a method that resets the player's information
+	 */
 	public void reset() {
 		setX(getInitX());
 		setY(getInitY());
@@ -111,15 +167,17 @@ public class Player extends GameObject{
 		keys.clear();
 	}
 	
+	/**
+	 * a method that bounds the player within the screen's 1000x750 frame.
+	 */
 	public void clamp(){
-		if(getX()>1000
-				){
+		if(getX()>1000){
 			right = false;
 		}
 		if(getX()<0){
 			left = false;
 		}
-		if(getY()>725){
+		if(getY()>690){
 			down = false;
 		}
 		if(getY()<0){
@@ -127,6 +185,9 @@ public class Player extends GameObject{
 		}
 	}
 	
+	/**
+	 * a method that checks if the player collides with any GameObjects
+	 */
 	public void collision(){
 		boolean tempUp = true;
 		boolean tempDown = true;
@@ -180,6 +241,9 @@ public class Player extends GameObject{
 			}
 	}
 	
+	/**
+	 * a method that opens the doors after getting a key
+	 */
 	public void openDoors(){
 		Key test = keys.get(keys.size()-1);
 		for(int i = 0; i<handler.objects.size(); i++){
@@ -191,6 +255,9 @@ public class Player extends GameObject{
 		}
 	}
 	
+	/**
+	 * a method that determines if the Player has beaten the level.
+	 */
 	public void win(){
 		if(side == LEFT_WIN){
 			if(getX()<0)

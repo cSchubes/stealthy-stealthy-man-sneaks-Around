@@ -1,3 +1,7 @@
+/* Ahmad Lubis, Alex Krach, Carson Schubert 
+ *  Gallatin 3rd
+ *  stealthy stealthy man sneaks Around
+ */
 package main;
 
 import java.awt.Color;
@@ -10,6 +14,12 @@ public class Key extends GameObject{
 	
 	private Color col;
 
+	/**
+	 * a constructor for the Key object
+	 * @param x - the x-coord of the Key
+	 * @param y - the y-coord of the Key
+	 * @param c - the color of the key
+	 */
 	public Key(int x, int y, Color c){
 		super(x, y, 0, ID.Key);
 		col = c;
@@ -19,6 +29,9 @@ public class Key extends GameObject{
 		
 	}
 	
+	/**
+	 * a method that paints the Key
+	 */
 	public void render(Graphics2D g2) {
 		RenderingHints rh = new RenderingHints(
 	             RenderingHints.KEY_ANTIALIASING,
@@ -40,6 +53,9 @@ public class Key extends GameObject{
 	}
 
 	@Override
+	/**
+	 * a method that gets the bounds of the key.
+	 */
 	public Shape getBounds() {
 		return new Rectangle(getX(), getY(), 12, 27);
 	}
@@ -50,6 +66,10 @@ public class Key extends GameObject{
 		
 	}
 	
+	/**
+	 * a method that returns the key's color
+	 * @return the key's color
+	 */
 	public Color getColor(){
 		return col;
 	}

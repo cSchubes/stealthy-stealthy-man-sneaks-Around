@@ -1,5 +1,9 @@
 package main;
 
+/* Ahmad Lubis, Alex Krach, Carson Schubert 
+ *  Gallatin 3rd
+ *  stealthy stealthy man sneaks Around
+ */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,7 +29,12 @@ public class MainMenu extends JPanel implements ActionListener
 	private Game f;
 	private Stealthy s;
 	private Image image;
-	
+
+	/**
+	 * A method that constructs the Main Menu for the game.
+	 * @param first - The Stealthy that is used in the game.
+	 * @param f - The Game object that is tied to the MainMenu.
+	 */
 	public MainMenu(Stealthy first, Game f)
 	{
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -68,6 +77,9 @@ public class MainMenu extends JPanel implements ActionListener
 		setVisible(true);
 	}
 
+	/**
+	 * A method that either starts the game or shows the instructions on how to play.
+	 */
 	public void actionPerformed(ActionEvent event) {
 		JButton pressed = (JButton)event.getSource();
 		String action = pressed.getText();
@@ -82,16 +94,22 @@ public class MainMenu extends JPanel implements ActionListener
 		}
 		else if(action.equals("Instructions"))
 		{
-			JOptionPane.showMessageDialog(null, "Hey these are the instructions to the game but not really it's just place holder text I'm sorry I lied to you");
+			JOptionPane.showMessageDialog(null, "Controls: ");
 		}
 		repaint();
 	}
 	
+	/**
+	 * A method that paints the MainMenu.
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
 	}
 	
+	/**
+	 * A method that resets the Stealthy.
+	 */
 	public void resetStealthy(){
 		int l = s.getLevel();
 		s = new Stealthy(f);
